@@ -407,7 +407,7 @@ class Datacamp:
         self.courses = []
 
         data = self.get_profile_data()
-        completed_courses = data["completed_courses"]
+        completed_courses = data["enrolled_courses"]
         for course in completed_courses:
             fetched_course = self.get_course(course["id"])
             if not fetched_course:
