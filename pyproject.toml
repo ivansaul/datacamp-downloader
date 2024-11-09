@@ -1,6 +1,40 @@
-[build-system]
-requires = [
-    "setuptools",
-    "wheel"
+[tool.poetry]
+name = "datacamp-downloader"
+version = "3.2.0"
+description = "Download your completed courses on Datacamp easily!"
+authors = ["Mohammad Al-Fetyani <m4bh@hotmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/TRoboto/datacamp-downloader"
+repository = "https://github.com/TRoboto/datacamp-downloader"
+keywords = ["Datacamp", "downloader", "courses"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
 ]
-build-backend = "setuptools.build_meta"
+
+packages = [
+    { include = "datacamp_downloader", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+texttable = "1.6.3"
+undetected_chromedriver = ">=3.5.0"
+selenium = "4.9.0"
+termcolor = "1.1.0"
+colorama = "0.4.4"
+tomd = "0.1.3"
+typer = "0.3.2"
+requests = ">=2.25.1"
+beautifulsoup4 = ">=4.9.3"
+pytest = ">=6.2.4"
+
+[tool.poetry.scripts]
+datacamp = "datacamp_downloader.downloader:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
