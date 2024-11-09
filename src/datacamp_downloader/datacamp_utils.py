@@ -153,7 +153,7 @@ class Datacamp:
             self.profile_data = self.session.get_json(
                 PROFILE_DATA_URL.format(slug=self.login_data["slug"])
             )
-            self.session.driver.minimize_window()
+
         return self.profile_data
 
     @login_required
@@ -235,7 +235,7 @@ class Datacamp:
         path = Path(directory) if not isinstance(directory, Path) else directory
 
         self.session.start()
-        self.session.driver.minimize_window()
+
 
         for i, material in enumerate(to_download, 1):
             if not material:
@@ -412,7 +412,7 @@ class Datacamp:
             fetched_course = self.get_course(course["id"])
             if not fetched_course:
                 continue
-            self.session.driver.minimize_window()
+
             self.courses.append(fetched_course)
             yield fetched_course
 
@@ -454,7 +454,7 @@ class Datacamp:
     @try_except_request
     def _get_courses_from_link(self, link: str):
         html = self.session.get(link)
-        self.session.driver.minimize_window()
+
 
         soup = BeautifulSoup(html, "html.parser")
         courses_ids = soup.findAll("article", {"class": re.compile("^js-async")})
