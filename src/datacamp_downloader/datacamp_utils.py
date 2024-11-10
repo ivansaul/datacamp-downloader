@@ -67,7 +67,6 @@ def try_except_request(f):
 
 class Datacamp:
     def __init__(self, session: "session.Session") -> None:
-
         self.session = session
         self.init()
 
@@ -236,7 +235,6 @@ class Datacamp:
 
         self.session.start()
 
-
         for i, material in enumerate(to_download, 1):
             if not material:
                 continue
@@ -254,7 +252,7 @@ class Datacamp:
         save_text(path, str(exercise), self.overwrite)
         if include_last_attempt and exercise.is_python and exercise.last_attempt:
             save_text(
-                path.parent / (path.name[:-3] + f".py"),
+                path.parent / (path.name[:-3] + ".py"),
                 exercise.last_attempt,
                 self.overwrite,
             )
@@ -280,7 +278,7 @@ class Datacamp:
         )
         if kwargs.get("datasets") and course.datasets:
             for i, dataset in enumerate(course.datasets, 1):
-                print_progress(i, len(course.datasets), f"datasets")
+                print_progress(i, len(course.datasets), "datasets")
                 if dataset.asset_url:
                     download_file(
                         dataset.asset_url,
@@ -377,6 +375,7 @@ class Datacamp:
             return
 
         self.tracks = []
+        self.profile_data = None
 
         data = self.get_profile_data()
         completed_tracks = data["completed_tracks"]
@@ -405,6 +404,7 @@ class Datacamp:
             return
 
         self.courses = []
+        self.profile_data = None
 
         data = self.get_profile_data()
         completed_courses = data["enrolled_courses"]
@@ -455,7 +455,6 @@ class Datacamp:
     def _get_courses_from_link(self, link: str):
         html = self.session.get(link)
 
-
         soup = BeautifulSoup(html, "html.parser")
         courses_ids = soup.findAll("article", {"class": re.compile("^js-async")})
         for i, id_tag in enumerate(courses_ids, 1):
@@ -478,7 +477,7 @@ class Datacamp:
     def _set_profile(self):
         try:
             data = self.session.get_json(LOGIN_DETAILS_URL)
-        except Exception as e:
+        except Exception:
             Logger.error("Incorrect input token!")
             return
         Logger.info("Hi, " + (data["first_name"] or data["last_name"] or data["email"]))
