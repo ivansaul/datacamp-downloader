@@ -83,7 +83,7 @@ def correct_path(path: str):
 def download_file(link: str, path: Path, progress=True, max_retry=10, overwrite=False):
     # start = time.clock()
     if not overwrite and path.exists():
-        Logger.warning(f"{path.name} is already downloaded")
+        Logger.warning(f"[{path.name}] is already downloaded")
         return
 
     for i in range(max_retry):
@@ -95,7 +95,7 @@ def download_file(link: str, path: Path, progress=True, max_retry=10, overwrite=
             Logger.print("", f"Retry [{i+1}/{max_retry}]", "magenta", end="")
 
     if i != -1:
-        Logger.error(f"Failed to download {link}")
+        Logger.error(f"Failed to download [{path.name}]")
         return
 
     path.parent.mkdir(exist_ok=True, parents=True)
@@ -129,10 +129,10 @@ def print_progress(progress, total, name, max=50):
 
 def save_text(path: Path, content: str, overwrite=False):
     if not path.is_file:
-        Logger.error(f"{path.name} isn't a file")
+        Logger.error(f"[{path.name}] isn't a file")
         return
     if not overwrite and path.exists():
-        Logger.warning(f"{path.name} is already downloaded")
+        Logger.warning(f"[{path.name}] is already downloaded")
         return
     path.parent.mkdir(exist_ok=True, parents=True)
     path.write_text(content, encoding="utf8")
