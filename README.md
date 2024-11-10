@@ -15,7 +15,6 @@
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Installation](#installation)
-    - [PIP](#pip)
     - [From source](#from-source)
     - [Autocompletion](#autocompletion)
   - [Documentation](#documentation)
@@ -24,11 +23,6 @@
     - [Download](#download)
   - [User Privacy](#user-privacy)
   - [Disclaimer](#disclaimer)
-
-## Update
-
-Datacamp Downloader V3.2 is now available. The major change is that the tool now uses selenium for the backend. See changelog for version [3.0](https://github.com/TRoboto/datacamp-downloader/pull/39), [3.1](https://github.com/TRoboto/datacamp-downloader/pull/42)
-and [3.2](https://github.com/TRoboto/datacamp-downloader/pull/47).
 
 ## Description
 
@@ -46,20 +40,16 @@ If you find this CLI helpful, please support the developers by starring this rep
 
 ## Installation
 
-### PIP
-
-If you use pip, you can install datacamp-downloader with:
-
-```
-pip install datacamp-downloader
-```
-
 ### From source
 
 You can directly clone this repo and install the tool with:
 
 ```
-pip install git+https://github.com/TRoboto/datacamp-downloader.git
+pip install git+https://github.com/ivansaul/datacamp-downloader.git
+```
+
+```
+playwright install chromium
 ```
 
 ### Autocompletion
@@ -81,18 +71,6 @@ The available commands with full documentation can be found in [docs](https://gi
 ## Getting Started
 
 ### Login
-
-- To login using your username or password, run:
-
-```
-datacamp login -u [USERNAME] -p [PASSWORD]
-```
-
-or simply run:
-
-```
-datacamp login
-```
 
 - To login using Datacamp authentication token, run:
 
