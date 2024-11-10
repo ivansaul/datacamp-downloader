@@ -334,9 +334,7 @@ class Datacamp:
             if exercises and not exercise.is_video:
                 self.download_normal_exercise(
                     exercise,
-                    path
-                    / "exercises"
-                    / f"{i:02}.ex{exercise_counter}_{exercise_title}.md",
+                    path / "exercises" / f"{i:02}.{exercise_title}_ex.md",
                     last_attempt,
                 )
                 exercise_counter += 1
