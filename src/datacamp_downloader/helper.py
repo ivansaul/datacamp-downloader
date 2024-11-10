@@ -1,11 +1,11 @@
 import itertools
 import re
+import subprocess
 import sys
 import threading
 import time
 from pathlib import Path
 
-import requests
 from termcolor import colored
 from texttable import Texttable
 
@@ -81,37 +81,39 @@ def correct_path(path: str):
 
 
 def download_file(link: str, path: Path, progress=True, max_retry=10, overwrite=False):
-    # start = time.clock()
-    if not overwrite and path.exists():
+    aria2_tmp = path.parent / f"{path.name}.aria2"
+
+    if not overwrite and not aria2_tmp.exists() and path.exists():
         Logger.warning(f"{path.absolute()} is already downloaded")
         return
 
-    for i in range(max_retry):
-        try:
-            response = requests.get(link, stream=True)
-            i = -1
-            break
-        except Exception:
-            Logger.print(f"", f"Retry [{i+1}/{max_retry}]", "magenta", end="")
-
-    if i != -1:
-        Logger.error(f"Failed to download {link}")
-        return
-
     path.parent.mkdir(exist_ok=True, parents=True)
-    total_length = response.headers.get("content-length")
 
-    with path.open("wb") as f:
-        if total_length is None:  # no content length header
-            f.write(response.content)
+    command = [
+        "aria2c",
+        link,
+        "--dir",
+        path.parent.as_posix(),
+        "--out",
+        path.name,
+        f"--allow-overwrite={'true' if overwrite else 'false'}",
+        "--console-log-level=warn",
+        "--summary-interval=0",
+        "--download-result=hide",
+        "--auto-file-renaming=false",
+        "--max-connection-per-server=5",
+        "--min-split-size=1M",
+    ]
+
+    try:
+        if progress:
+            Logger.print(f"{path.name}", "[Downloading]", "blue", end="\n")
+            subprocess.run(command, check=True)
         else:
-            dl = 0
-            total_length = int(total_length)
-            for data in response.iter_content(chunk_size=1024 * 1024):  # 1MB
-                dl += len(data)
-                f.write(data)
-                if progress:
-                    print_progress(dl, total_length, path.name)
+            subprocess.run(command, check=True, stdout=subprocess.DEVNULL)
+    except Exception:
+        print("Failed to download video")
+
     if progress:
         sys.stdout.write("\n")
 
