@@ -320,12 +320,23 @@ class Datacamp:
             print_progress(i, len(ids), f"chapter {chapter.number}")
             exercise = self._get_exercise(id)
             exercise.last_attempt = last_attempts[id]
+
+            if not exercise.is_video:
+                exercise_title = exercise.data.title
+            else:
+                exercise_title = exercise.data.get("title")
+
+            exercise_title = exercise_title or ""
+            exercise_title = exercise_title.lower().replace(" ", "-")
+
             if not exercise:
                 continue
             if exercises and not exercise.is_video:
                 self.download_normal_exercise(
                     exercise,
-                    path / "exercises" / f"ex{exercise_counter}.md",
+                    path
+                    / "exercises"
+                    / f"{i:02}.ex{exercise_counter}_{exercise_title}.md",
                     last_attempt,
                 )
                 exercise_counter += 1
@@ -333,18 +344,18 @@ class Datacamp:
                 video = self._get_video(exercise.data.get("projector_key"))
                 if not video:
                     continue
-                video_path = path / "videos" / f"ch{chapter.number}_{video_counter}"
+                video_path = path / "videos" / f"{i:02}.{exercise_title}"
                 if videos and video.video_mp4_link:
                     download_file(
                         video.video_mp4_link,
-                        video_path.with_suffix(".mp4"),
+                        video_path.parent / (video_path.name + ".mp4"),
                         overwrite=self.overwrite,
                     )
                 if audios and video.audio_link:
                     download_file(
                         video.audio_link,
-                        path / "audios" / f"ch{chapter.number}_{video_counter}.mp3",
-                        False,
+                        path / "audios" / f"{video_path.name}.mp3",
+                        True,
                         overwrite=self.overwrite,
                     )
                 if scripts and video.script_link:
