@@ -17,6 +17,7 @@
   - [Installation](#installation)
     - [From source](#from-source)
     - [Autocompletion](#autocompletion)
+  - [Update](#update)
   - [Documentation](#documentation)
   - [Getting Started](#getting-started)
     - [Login](#login)
@@ -63,6 +64,14 @@ datacamp --install-completion [bash|zsh|fish|powershell|pwsh]
 Then restart the terminal.
 
 **Note:** autocompletion might not be supported by all operating systems.
+
+## Update
+
+To update the CLI, run:
+
+```console
+pip install git+https://github.com/ivansaul/datacamp-downloader.git --force-reinstall
+```
 
 ## Documentation
 
