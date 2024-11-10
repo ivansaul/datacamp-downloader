@@ -84,7 +84,7 @@ def download_file(link: str, path: Path, progress=True, max_retry=10, overwrite=
     aria2_tmp = path.parent / f"{path.name}.aria2"
 
     if not overwrite and not aria2_tmp.exists() and path.exists():
-        Logger.warning(f"{path.name} is already downloaded")
+        Logger.warning(f"[{path.name}] is already downloaded")
         return
 
     path.parent.mkdir(exist_ok=True, parents=True)
@@ -107,12 +107,12 @@ def download_file(link: str, path: Path, progress=True, max_retry=10, overwrite=
 
     try:
         if progress:
-            Logger.print(f"{path.name}", "[Downloading]", "blue", end="\n")
+            Logger.print(f"[{path.name}]", "[Downloading]", "blue", end="\n")
             subprocess.run(command, check=True)
         else:
             subprocess.run(command, check=True, stdout=subprocess.DEVNULL)
     except Exception:
-        print("Failed to download video")
+        print(f"Failed to download [{path.name}]")
 
     if progress:
         sys.stdout.write("\n")
@@ -131,10 +131,10 @@ def print_progress(progress, total, name, max=50):
 
 def save_text(path: Path, content: str, overwrite=False):
     if not path.is_file:
-        Logger.error(f"{path.name} isn't a file")
+        Logger.error(f"[{path.name}] isn't a file")
         return
     if not overwrite and path.exists():
-        Logger.warning(f"{path.name} is already downloaded")
+        Logger.warning(f"[{path.name}] is already downloaded")
         return
     path.parent.mkdir(exist_ok=True, parents=True)
     path.write_text(content, encoding="utf8")
